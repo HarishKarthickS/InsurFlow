@@ -9,23 +9,23 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/claims
 
 async function seed(retries = 3) {
   try {
-    console.log(`🌱 Starting Comprehensive B2B Seeding...`);
+    console.log(`Starting Comprehensive B2B Seeding...`);
     
     while (retries > 0) {
       try {
         await mongoose.connect(MONGODB_URI);
-        console.log('✅ Connected to MongoDB');
+        console.log('Connected to MongoDB');
         break;
       } catch (err) {
         retries -= 1;
-        console.log(`⚠️ Connection failed. Retries left: ${retries}`);
+        console.log(`Connection failed. Retries left: ${retries}`);
         if (retries === 0) throw err;
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
     }
 
     // 0. Clear existing data for a clean slate
-    console.log('🧹 Clearing existing database...');
+    console.log('Clearing existing database...');
     await Organization.deleteMany({});
     await Provider.deleteMany({});
     await User.deleteMany({});
@@ -51,7 +51,7 @@ async function seed(retries = 3) {
       }
     ]);
     const mainOrg = orgs[0];
-    console.log('🏢 Created Organizations');
+    console.log('Created Organizations');
 
     // 2. Create Providers (Hospitals/Clinics)
     const providers = await Provider.create([
@@ -71,7 +71,7 @@ async function seed(retries = 3) {
     ]);
     const hospital = providers[0];
     const dental = providers[1];
-    console.log('🏥 Created Providers');
+    console.log('Created Providers');
 
     // 3. Create Users
     const users = await User.create([
@@ -86,7 +86,7 @@ async function seed(retries = 3) {
     ]);
     const admin = users[0];
     const adjuster = users[2];
-    console.log('👤 Created Users');
+    console.log('Created Users');
 
     // 4. Create Sample Claims (Variety of states)
     const sampleClaims = [
@@ -151,12 +151,12 @@ async function seed(retries = 3) {
     ];
 
     await Claim.create(sampleClaims);
-    console.log('📄 Created Sample Claims');
+    console.log('Created Sample Claims');
 
-    console.log('✅ DATABASE FULLY SEEDED WITH SAMPLE DATA!');
+    console.log('DATABASE FULLY SEEDED WITH SAMPLE DATA!');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Seeding failed:', error);
+    console.error('Seeding failed:', error);
     process.exit(1);
   }
 }

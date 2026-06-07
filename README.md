@@ -1,34 +1,34 @@
-# 🛡️ InsurFlow B2B: The Intelligence-First Claims Adjudication Engine
+# InsurFlow B2B: The Intelligence-First Claims Adjudication Engine
 
 **Claim management doesn't have to be a nightmare.**  
 Welcome to **InsurFlow B2B**, a high-performance, multi-tenant enterprise SaaS designed to transform how insurance companies ingest, analyze, and settle medical claims. Powered by **Next.js 15**, **Tailwind CSS v4**, and **Gemini AI**, this is the ultimate open-source toolkit for modern insurance infrastructure.
 
 ---
 
-## ✨ The "Perfect SaaS" Experience
+## The "Perfect SaaS" Experience
 
 InsurFlow isn't just a tracker; it's a full-cycle automated ecosystem.
 
-### 🧠 AI-Powered Efficiency
+### AI-Powered Efficiency
 *   **Tiered OCR Pipeline:** Upload a medical bill and watch as our AI (Gemini 2.0) automatically extracts patient data, clinical descriptions, and financial amounts.
 *   **Risk Engine:** Automated risk heuristics that flag policy violations and potential fraud the second a claim enters the system.
 
-### 🏥 HospitalLink™ Provider Portal
+### HospitalLink Provider Portal
 *   **Self-Service Submission:** Hospitals and clinics can directly digitize claims through their own secure workspace.
 *   **Settlement Transparency:** Providers can track every approved claim through to financial settlement with live bank reference tracking.
 
-### 🏢 Enterprise Adjudication Center
+### Enterprise Adjudication Center
 *   **Master Queue:** A dense, data-rich command center for adjusters with real-time assignment and risk-level prioritization.
 *   **Rule-Based Governance:** Admins can define custom adjudication policies (e.g., "Dental max ₹50k") that the system enforces automatically.
 *   **Full Audit Traceability:** A permanent, immutable timeline for every claim, recording who did what, when, and why.
 
-### 📊 Insight & Compliance
+### Analytics & Insight
 *   **Analytics Dashboards:** Beautiful, interactive charts showing volume trends and status distribution.
 *   **Data Export Engine:** Generate and download comprehensive CSV reports for financial auditing with one click.
 
 ---
 
-## 🛠️ Tech Stack (The Modern Monolith)
+## Tech Stack (The Modern Monolith)
 
 We've ditched the complexity of decoupled apps for a unified, high-velocity Next.js monolith.
 
@@ -41,7 +41,7 @@ We've ditched the complexity of decoupled apps for a unified, high-velocity Next
 
 ---
 
-## 🚀 Instant Deployment (Local Development)
+## Instant Deployment (Local Development)
 
 Get your insurance workspace running in less than 2 minutes.
 
@@ -68,7 +68,7 @@ docker-compose exec app npm run seed
 
 ---
 
-## 🔑 Demo Adjudicator Access
+## Demo Adjudicator Access
 Go to [http://localhost:3000](http://localhost:3000) and use these pre-loaded accounts:
 
 *   **Insurance Admin:** `admin@insurflow.com` (password: `password`)
@@ -77,7 +77,7 @@ Go to [http://localhost:3000](http://localhost:3000) and use these pre-loaded ac
 
 ---
 
-## 🤝 Open Source & Fun
-InsurFlow is built with ❤️ for the community. Whether you're an insurance professional looking to automate your workflow or a developer wanting to see a **Perfect Next.js Monolith** in action, you're welcome here.
+## Open Source & Fun
+InsurFlow is built with for the community. Whether you're an insurance professional looking to automate your workflow or a developer wanting to see a **Perfect Next.js Monolith** in action, you're welcome here.
 
-**Happy Adjudicating!** 🚀🛡️
+**Happy Adjudicating!**
