@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/uploads:/app/public/uploads
+    env_file:
+      - ./.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb_container:27017/claims-management
+      - AUTH_TRUST_HOST=true
+      - NEXTAUTH_URL=http://localhost:3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+    depends_on:
+      - mongodb_container
+
+  mongodb_container:
+    image: mongo:latest
+    container_name: mongodb_container
+    ports:
+      - "27018:27017" # Using 27018 to avoid conflict with local MongoDB
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
