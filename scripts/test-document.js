@@ -1,6 +1,6 @@
 /**
  * Test script for Supabase document retrieval
- * Usage: node test-document.js claims/document-name.pdf
+ * Usage: node scripts/test-document.js claims/document-name.pdf
  */
 
 const { createClient } = require('@supabase/supabase-js');
@@ -14,7 +14,7 @@ dotenv.config();
 // Check if the document path is provided as an argument
 const documentPath = process.argv[2];
 if (!documentPath) {
-  console.error('❌ No document path provided. Usage: node test-document.js claims/document-name.pdf');
+  console.error('❌ No document path provided. Usage: node scripts/test-document.js claims/document-name.pdf');
   process.exit(1);
 }
 

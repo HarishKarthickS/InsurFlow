@@ -29,31 +29,31 @@ export default function ReviewClaimForm({ claimId, initialAmount }: { claimId: s
   };
 
   return (
-    <form action={handleAction} className="bg-white p-6 rounded-lg shadow-card space-y-4">
-      <h3 className="text-xl font-bold mb-4">Review Claim</h3>
+    <form action={handleAction} className="card p-4 space-y-3">
+      <h3 className="text-lg">Stamp decision</h3>
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Approved Amount (₹)</label>
+        <label className="section-kicker block mb-1">Authorized amount (₹)</label>
         <input 
           name="approvedAmount" 
           type="number" 
           defaultValue={initialAmount}
-          className="input"
+          className="input font-mono"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Insurer Comments</label>
+        <label className="section-kicker block mb-1">Adjuster remarks</label>
         <textarea 
           name="comments" 
           className="input" 
           rows={3} 
-          placeholder="Reason for approval/rejection..."
+          placeholder="Reason for approval or rejection"
         ></textarea>
       </div>
 
-      <div className="flex gap-4 pt-2">
+      <div className="flex gap-2 pt-1">
         <button 
           name="action" 
           value="approved" 
@@ -61,7 +61,7 @@ export default function ReviewClaimForm({ claimId, initialAmount }: { claimId: s
           disabled={isSubmitting}
           className="btn btn-success flex-1"
         >
-          Approve Claim
+          Approve
         </button>
         <button 
           name="action" 
@@ -70,7 +70,7 @@ export default function ReviewClaimForm({ claimId, initialAmount }: { claimId: s
           disabled={isSubmitting}
           className="btn btn-danger flex-1"
         >
-          Reject Claim
+          Reject
         </button>
       </div>
     </form>

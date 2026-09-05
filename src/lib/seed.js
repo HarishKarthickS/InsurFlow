@@ -4,6 +4,7 @@ import Organization from './models/Organization.js';
 import Provider from './models/Provider.js';
 import Claim from './models/Claim.js';
 import crypto from 'crypto';
+import { DEV_DEMO_PASSWORD } from './devDemoPassword.js';
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/claims-management';
 
@@ -37,7 +38,7 @@ async function seed(retries = 3) {
         name: 'InsurFlow Global',
         slug: 'insurflow',
         apiKey: 'insurflow_master_key_2026',
-        branding: { primaryColor: '#4B56D2', secondaryColor: '#82C3EC' },
+        branding: { primaryColor: '#1F6A72', secondaryColor: '#5A7A86' },
         policyRules: [
           { category: 'Surgery', maxAmount: 500000, description: 'High-value surgical procedures' },
           { category: 'Dental', maxAmount: 50000, description: 'Routine dental care' }
@@ -76,13 +77,13 @@ async function seed(retries = 3) {
     // 3. Create Users
     const users = await User.create([
       // InsurFlow Staff
-      { name: 'Global Admin', email: 'admin@insurflow.com', password: 'password', role: 'admin', organizationId: mainOrg._id },
-      { name: 'Ops Manager', email: 'manager@insurflow.com', password: 'password', role: 'manager', organizationId: mainOrg._id },
-      { name: 'Senior Adjuster', email: 'adjuster@insurflow.com', password: 'password', role: 'adjuster', organizationId: mainOrg._id },
+      { name: 'Global Admin', email: 'admin@insurflow.com', password: DEV_DEMO_PASSWORD, role: 'admin', organizationId: mainOrg._id },
+      { name: 'Ops Manager', email: 'manager@insurflow.com', password: DEV_DEMO_PASSWORD, role: 'manager', organizationId: mainOrg._id },
+      { name: 'Senior Adjuster', email: 'adjuster@insurflow.com', password: DEV_DEMO_PASSWORD, role: 'adjuster', organizationId: mainOrg._id },
       
       // Hospital Staff
-      { name: 'Hospital Admin', email: 'admin@citygeneral.com', password: 'password', role: 'provider_admin', organizationId: mainOrg._id, providerId: hospital._id },
-      { name: 'Billing Desk', email: 'staff@citygeneral.com', password: 'password', role: 'provider_staff', organizationId: mainOrg._id, providerId: hospital._id }
+      { name: 'Hospital Admin', email: 'admin@citygeneral.com', password: DEV_DEMO_PASSWORD, role: 'provider_admin', organizationId: mainOrg._id, providerId: hospital._id },
+      { name: 'Billing Desk', email: 'staff@citygeneral.com', password: DEV_DEMO_PASSWORD, role: 'provider_staff', organizationId: mainOrg._id, providerId: hospital._id }
     ]);
     const admin = users[0];
     const adjuster = users[2];

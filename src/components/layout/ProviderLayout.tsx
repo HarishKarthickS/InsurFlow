@@ -20,57 +20,54 @@ export default function ProviderLayout({
   const pathname = usePathname();
 
   const navItems = [
-    { name: "My Claims", href: "/provider/dashboard", icon: Squares2X2Icon },
-    { name: "Submit Claim", href: "/provider/submit", icon: CloudArrowUpIcon },
-    { name: "Payout History", href: "/provider/payouts", icon: CreditCardIcon },
+    { name: "Facility files", href: "/provider/dashboard", icon: Squares2X2Icon },
+    { name: "Lodge claim", href: "/provider/submit", icon: CloudArrowUpIcon },
+    { name: "Settlements", href: "/provider/payouts", icon: CreditCardIcon },
   ];
 
   return (
-    <div className="flex h-screen bg-[#FDFDFD] overflow-hidden font-sans">
-      {/* Provider Sidebar */}
-      <aside className="w-64 bg-slate-900 flex flex-col shrink-0">
-        <div className="p-8">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-              <BuildingLibraryIcon className="h-5 w-5 text-white" />
+    <div className="flex h-screen overflow-hidden">
+      <aside className="w-60 bg-rail flex flex-col shrink-0 border-r-4 border-[#1a2a31]">
+        <div className="px-4 pt-6 pb-4 border-b border-white/10">
+          <div className="flex items-center gap-2 text-folder">
+            <BuildingLibraryIcon className="h-5 w-5 text-primary" />
+            <div>
+              <p className="font-display text-[11px] tracking-[0.18em] uppercase text-[#8fa0ab]">Hospital intake</p>
+              <p className="font-display text-xl leading-none">Facility desk</p>
             </div>
-            <span className="text-white font-black tracking-tight text-lg">Hospital<span className="text-emerald-400 font-medium">Link</span></span>
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1">
+        <nav className="flex-1 py-4 space-y-1 pr-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isActive
-                    ? "bg-emerald-500/10 text-emerald-400 font-bold"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                }`}
+                className={`nav-tab ${isActive ? "nav-tab-active" : ""}`}
               >
-                <item.icon className="h-5 w-5" />
-                <span className="text-sm">{item.name}</span>
+                <item.icon className="h-4 w-4" />
+                <span>{item.name}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-6 border-t border-slate-800">
+        <div className="p-3 border-t border-white/10">
+          <p className="px-3 mb-2 text-xs text-[#8fa0ab] truncate">{session?.user?.name}</p>
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}
-            className="flex items-center gap-3 text-slate-500 hover:text-red-400 transition-colors w-full px-4"
+            className="nav-tab w-[calc(100%-10px)] text-[#8fa0ab]"
           >
-            <ArrowRightOnRectangleIcon className="h-5 w-5" />
-            <span className="text-sm font-bold">Log Out</span>
+            <ArrowRightOnRectangleIcon className="h-4 w-4" />
+            <span>Sign out</span>
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto bg-slate-50/30">
-        <div className="max-w-6xl mx-auto p-10">
+      <main className="flex-1 overflow-y-auto">
+        <div className="max-w-6xl mx-auto p-6">
           {children}
         </div>
       </main>

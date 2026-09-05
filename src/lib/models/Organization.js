@@ -15,8 +15,8 @@ const OrganizationSchema = new mongoose.Schema({
   },
   // B2B Branding
   branding: {
-    primaryColor: { type: String, default: '#4B56D2' },
-    secondaryColor: { type: String, default: '#82C3EC' },
+    primaryColor: { type: String, default: '#1F6A72' },
+    secondaryColor: { type: String, default: '#5A7A86' },
     logoUrl: { type: String }
   },
   // API Integration

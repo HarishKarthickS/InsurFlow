@@ -3,14 +3,10 @@
 import { useState } from "react";
 import { updateOrganizationSettings } from "@/lib/actions/teamActions";
 import { toast } from "react-hot-toast";
-import { 
-  SwatchIcon, 
-  GlobeAltIcon, 
-  PhotoIcon,
-  CheckBadgeIcon,
-  BuildingOfficeIcon,
-  ArrowPathIcon
-} from "@heroicons/react/24/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+
+const DEFAULT_PRIMARY = "#1F6A72";
+const DEFAULT_SECONDARY = "#5A7A86";
 
 export default function WorkspaceSettingsForm({ initialOrg }: { initialOrg: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,80 +27,56 @@ export default function WorkspaceSettingsForm({ initialOrg }: { initialOrg: any 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-10">
-      <div className="card border-none shadow-xl shadow-slate-200/40 p-10 bg-white rounded-[3rem]">
-        <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-10 border-b border-gray-50 pb-4">Corporate Identity</h3>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="card p-5">
+        <h3 className="section-kicker mb-4 border-b border-[#c5d0d8] pb-2">Carrier identity</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Legal Entity Name</label>
-            <div className="relative group">
-              <BuildingOfficeIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-primary" />
-              <input name="orgName" type="text" className="input pl-10 py-3 font-bold" defaultValue={initialOrg.name} required />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="section-kicker block mb-1">Legal name</label>
+            <input name="orgName" type="text" className="input" defaultValue={initialOrg.name} required />
           </div>
-
-          <div className="space-y-1">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Global Logo Asset (URL)</label>
-            <div className="relative group">
-              <PhotoIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-primary" />
-              <input name="logoUrl" type="url" className="input pl-10 py-3 font-bold" placeholder="https://..." defaultValue={initialOrg.branding?.logoUrl} />
-            </div>
+          <div>
+            <label className="section-kicker block mb-1">Logo URL</label>
+            <input name="logoUrl" type="url" className="input" placeholder="https://..." defaultValue={initialOrg.branding?.logoUrl} />
           </div>
         </div>
       </div>
 
-      <div className="card border-none shadow-xl shadow-slate-200/40 p-10 bg-white rounded-[3rem]">
-        <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-10 border-b border-gray-50 pb-4">UI Branding & Palette</h3>
+      <div className="card p-5">
+        <h3 className="section-kicker mb-4 border-b border-[#c5d0d8] pb-2">Ink colors</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Primary Signature Color</label>
-            <div className="flex items-center gap-6 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="section-kicker block mb-1">Primary (teal)</label>
+            <div className="flex items-center gap-3 bg-[#e8eef1] p-3 border border-[#c5d0d8]">
               <input 
                 name="primaryColor"
                 type="color" 
-                defaultValue={initialOrg.branding?.primaryColor || '#4B56D2'} 
-                className="w-16 h-16 rounded-xl cursor-pointer border-4 border-white shadow-sm appearance-none bg-transparent"
+                defaultValue={initialOrg.branding?.primaryColor || DEFAULT_PRIMARY} 
+                className="w-12 h-12 cursor-pointer border border-[#8fa0ab]"
               />
-              <div>
-                <p className="text-sm font-black text-gray-800 tracking-tighter italic">MASTER HUE</p>
-                <code className="text-xs font-bold text-gray-400 uppercase">{initialOrg.branding?.primaryColor || '#4B56D2'}</code>
-              </div>
+              <code className="file-id">{initialOrg.branding?.primaryColor || DEFAULT_PRIMARY}</code>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Secondary Accent Hue</label>
-            <div className="flex items-center gap-6 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <div>
+            <label className="section-kicker block mb-1">Secondary (steel)</label>
+            <div className="flex items-center gap-3 bg-[#e8eef1] p-3 border border-[#c5d0d8]">
               <input 
                 name="secondaryColor"
                 type="color" 
-                defaultValue={initialOrg.branding?.secondaryColor || '#82C3EC'} 
-                className="w-16 h-16 rounded-xl cursor-pointer border-4 border-white shadow-sm appearance-none bg-transparent"
+                defaultValue={initialOrg.branding?.secondaryColor || DEFAULT_SECONDARY} 
+                className="w-12 h-12 cursor-pointer border border-[#8fa0ab]"
               />
-              <div>
-                <p className="text-sm font-black text-gray-800 tracking-tighter italic">ACCENT HUE</p>
-                <code className="text-xs font-bold text-gray-400 uppercase">{initialOrg.branding?.secondaryColor || '#82C3EC'}</code>
-              </div>
+              <code className="file-id">{initialOrg.branding?.secondaryColor || DEFAULT_SECONDARY}</code>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end pt-6">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="btn btn-primary px-12 py-5 rounded-3xl text-lg font-black italic shadow-2xl shadow-primary/30 flex items-center gap-3 transform hover:scale-105 transition-all"
-        >
-          {isSubmitting ? (
-            <ArrowPathIcon className="h-6 w-6 animate-spin" />
-          ) : (
-            <>
-              COMMIT WORKSPACE CHANGES
-            </>
-          )}
+      <div className="flex justify-end">
+        <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+          {isSubmitting ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : "Save desk settings"}
         </button>
       </div>
     </form>

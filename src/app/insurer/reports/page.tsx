@@ -7,8 +7,7 @@ import { toast } from "react-hot-toast";
 import { 
   DocumentArrowDownIcon, 
   FunnelIcon,
-  CalendarDaysIcon,
-  ChartPieIcon
+  CalendarDaysIcon
 } from "@heroicons/react/24/outline";
 
 export default function ReportsPage() {
@@ -29,7 +28,6 @@ export default function ReportsPage() {
         return;
       }
 
-      // Generate CSV
       const headers = Object.keys(data[0]).join(',');
       const rows = data.map((row: any) => Object.values(row).join(',')).join('\n');
       const csvContent = "data:text/csv;charset=utf-8," + headers + '\n' + rows;
@@ -52,27 +50,25 @@ export default function ReportsPage() {
 
   return (
     <InsurerLayout>
-      <div className="space-y-10 max-w-4xl mx-auto">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gray-200">
-            <DocumentArrowDownIcon className="h-8 w-8 text-white" />
-          </div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tighter">DATA EXPORT ENGINE</h1>
-          <p className="text-gray-500 mt-2 font-medium">Generate comprehensive CSV reports for auditing and financial review.</p>
+      <div className="space-y-6 max-w-3xl">
+        <div>
+          <p className="section-kicker">Audit extract</p>
+          <h1 className="text-3xl">CSV pull</h1>
+          <p className="text-sm text-[#4a5f69] mt-1">Filter the tray and download a file for finance review.</p>
         </div>
 
-        <div className="card border-none shadow-2xl shadow-gray-200/50 p-10 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-            <div className="space-y-4">
-              <label className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                <FunnelIcon className="h-3 w-3" /> Adjudication Status
+        <div className="card p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+            <div>
+              <label className="section-kicker flex items-center gap-1 mb-1">
+                <FunnelIcon className="h-3 w-3" /> Stamp
               </label>
               <select 
-                className="input py-3"
+                className="input"
                 value={filters.status}
                 onChange={(e) => setFilters({...filters, status: e.target.value})}
               >
-                <option value="">All Statuses</option>
+                <option value="">All stamps</option>
                 <option value="pending">Pending</option>
                 <option value="approved">Approved</option>
                 <option value="rejected">Rejected</option>
@@ -80,21 +76,21 @@ export default function ReportsPage() {
               </select>
             </div>
 
-            <div className="space-y-4">
-              <label className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                <CalendarDaysIcon className="h-3 w-3" /> Time Period
+            <div>
+              <label className="section-kicker flex items-center gap-1 mb-1">
+                <CalendarDaysIcon className="h-3 w-3" /> Period
               </label>
               <div className="flex items-center gap-2">
                 <input 
                   type="date" 
-                  className="input py-3" 
+                  className="input" 
                   value={filters.startDate}
                   onChange={(e) => setFilters({...filters, startDate: e.target.value})}
                 />
-                <span className="text-gray-300 font-bold px-2">to</span>
+                <span className="text-[#8fa0ab] text-xs">to</span>
                 <input 
                   type="date" 
-                  className="input py-3" 
+                  className="input" 
                   value={filters.endDate}
                   onChange={(e) => setFilters({...filters, endDate: e.target.value})}
                 />
@@ -102,25 +98,14 @@ export default function ReportsPage() {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-gray-50">
-            <button
-              onClick={handleExport}
-              disabled={isExporting}
-              className="w-full bg-gray-900 hover:bg-black text-white font-black py-5 rounded-2xl shadow-xl shadow-gray-200 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
-            >
-              {isExporting ? (
-                <div className="h-6 w-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <ChartPieIcon className="h-6 w-6" />
-                  GENERATE AGGREGATED CSV
-                </>
-              )}
-            </button>
-            <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-6 italic">
-              Data is aggregated in real-time from your organization's secure workspace.
-            </p>
-          </div>
+          <button
+            onClick={handleExport}
+            disabled={isExporting}
+            className="btn btn-primary w-full py-2.5 disabled:opacity-50"
+          >
+            <DocumentArrowDownIcon className="h-5 w-5" />
+            {isExporting ? "Building extract…" : "Generate CSV"}
+          </button>
         </div>
       </div>
     </InsurerLayout>

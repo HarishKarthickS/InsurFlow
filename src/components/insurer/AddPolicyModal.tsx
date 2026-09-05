@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { addPolicyRule } from "@/lib/actions/teamActions";
 import { toast } from "react-hot-toast";
-import { 
-  XMarkIcon,
-  CheckBadgeIcon,
-  CurrencyRupeeIcon,
-  DocumentTextIcon,
-  PlusIcon
-} from "@heroicons/react/24/outline";
+import { XMarkIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 export default function AddPolicyModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,64 +29,39 @@ export default function AddPolicyModal({ isOpen, onClose }: { isOpen: boolean, o
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden">
-        <div className="p-8 border-b border-gray-50 flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1b2c33]/70">
+      <div className="bg-folder w-full max-w-lg border border-[#8fa0ab] shadow-[4px_4px_0_#8fa0ab]">
+        <div className="p-5 border-b border-[#c5d0d8] flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-black text-gray-900 italic">NEW ADJUDICATION POLICY</h2>
-            <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">Rule-Based Governance</p>
+            <h2 className="text-xl">New desk rule</h2>
+            <p className="section-kicker mt-0.5">Flag files over threshold</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-            <XMarkIcon className="h-6 w-6 text-gray-400" />
+          <button onClick={onClose} className="p-1 hover:bg-[#e8eef1]">
+            <XMarkIcon className="h-5 w-5 text-[#4a5f69]" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8 space-y-8">
-          <div className="space-y-6">
-            <div>
-              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Service Category</label>
-              <div className="relative group">
-                <CheckBadgeIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-primary transition-colors" />
-                <input name="category" type="text" className="input pl-10 py-4 font-bold" placeholder="e.g. Dental, Surgery, Pharmacy" required />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Threshold Amount (₹)</label>
-              <div className="relative group">
-                <CurrencyRupeeIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-300 group-focus-within:text-primary transition-colors" />
-                <input name="maxAmount" type="number" className="input pl-10 py-4 font-black font-mono text-lg" placeholder="0.00" required />
-              </div>
-              <p className="text-[10px] text-gray-300 mt-2 italic font-bold">Claims exceeding this amount will be flagged for senior review.</p>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 ml-1">Rule Justification</label>
-              <textarea name="description" rows={3} className="input py-4 font-medium" placeholder="Explain the context of this limit..." required />
-            </div>
+        <form onSubmit={handleSubmit} className="p-5 space-y-4">
+          <div>
+            <label className="section-kicker block mb-1">Service category</label>
+            <input name="category" type="text" className="input" placeholder="Dental, Surgery…" required />
+          </div>
+          <div>
+            <label className="section-kicker block mb-1">Threshold (₹)</label>
+            <input name="maxAmount" type="number" className="input font-mono" required />
+          </div>
+          <div>
+            <label className="section-kicker block mb-1">Justification</label>
+            <textarea name="description" rows={3} className="input" required />
           </div>
 
-          <div className="pt-4 flex gap-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-6 py-4 text-xs font-black uppercase text-gray-400 hover:text-gray-900 transition-colors"
-            >
+          <div className="flex gap-2 pt-1">
+            <button type="button" onClick={onClose} className="btn btn-secondary flex-1">
               Discard
             </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all"
-            >
-              {isSubmitting ? (
-                <div className="h-5 w-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <PlusIcon className="h-5 w-5" />
-                  ENABLE POLICY
-                </>
-              )}
+            <button type="submit" disabled={isSubmitting} className="btn btn-primary flex-1">
+              <PlusIcon className="h-4 w-4" />
+              Enable rule
             </button>
           </div>
         </form>

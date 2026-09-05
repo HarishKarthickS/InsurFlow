@@ -10,22 +10,7 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon
 } from "@heroicons/react/24/outline";
-
-const StatusBadge = ({ status }: { status: string }) => {
-  const getStatusClasses = () => {
-    switch (status) {
-      case 'approved': return 'bg-success/10 text-success border-success/20';
-      case 'rejected': return 'bg-danger/10 text-danger border-danger/20';
-      default: return 'bg-warning/10 text-warning border-warning/20';
-    }
-  };
-
-  return (
-    <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${getStatusClasses()}`}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  );
-};
+import StatusStamp from "@/components/ui/StatusStamp";
 
 export default function ClaimsTable({ initialClaims }: { initialClaims: any[] }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,102 +40,98 @@ export default function ClaimsTable({ initialClaims }: { initialClaims: any[] })
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 justify-between bg-white p-4 rounded-lg shadow-sm">
+    <div className="space-y-3">
+      <div className="flex flex-col sm:flex-row gap-2 card p-3">
         <div className="relative flex-1">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-[#8fa0ab]" />
           <input
             type="text"
-            placeholder="Search by patient name or ID..."
-            className="input pl-10"
+            placeholder="Search by patient or file ID"
+            className="input pl-8"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <select
-          className="input sm:w-48"
+          className="input sm:w-44"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
         >
-          <option value="">All Statuses</option>
+          <option value="">All stamps</option>
           <option value="pending">Pending</option>
           <option value="approved">Approved</option>
           <option value="rejected">Rejected</option>
         </select>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Claim ID</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Patient</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Actions</th>
+      <div className="queue-board overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Patient</th>
+              <th>Date</th>
+              <th>Amount</th>
+              <th>Stamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredClaims.map((claim) => (
+              <tr key={claim._id}>
+                <td className="file-id">FILE-{claim._id.slice(-6).toUpperCase()}</td>
+                <td>
+                  <div className="text-sm font-medium">{claim.name}</div>
+                  <div className="text-xs text-[#4a5f69]">{claim.email}</div>
+                </td>
+                <td className="text-sm text-[#4a5f69]">
+                  {new Date(claim.submissionDate).toLocaleDateString()}
+                </td>
+                <td>
+                  <div className="font-mono text-sm tabular-nums">₹{claim.claimAmount.toLocaleString()}</div>
+                  {claim.approvedAmount && (
+                    <div className="text-xs text-success font-mono">Auth ₹{claim.approvedAmount.toLocaleString()}</div>
+                  )}
+                </td>
+                <td>
+                  <StatusStamp status={claim.status} />
+                </td>
+                <td className="space-x-1">
+                  <Link
+                    href={`/insurer/claims/${claim._id}`}
+                    className="inline-flex p-1.5 text-primary hover:bg-[#dce6eb]"
+                    title="View Details"
+                  >
+                    <EyeIcon className="w-4 h-4" />
+                  </Link>
+                  {claim.status === 'pending' && (
+                    <>
+                      <button
+                        onClick={() => handleUpdate(claim._id, 'approved', claim.claimAmount)}
+                        disabled={isUpdating === claim._id}
+                        className="inline-flex p-1.5 text-success hover:bg-[#dce8e2] disabled:opacity-50"
+                        title="Approve"
+                      >
+                        <CheckIcon className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleUpdate(claim._id, 'rejected')}
+                        disabled={isUpdating === claim._id}
+                        className="inline-flex p-1.5 text-danger hover:bg-[#f0e4e4] disabled:opacity-50"
+                        title="Reject"
+                      >
+                        <XMarkIcon className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredClaims.map((claim) => (
-                <tr key={claim._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    #{claim._id.slice(-6)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-semibold text-gray-900">{claim.name}</div>
-                    <div className="text-xs text-gray-500">{claim.email}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(claim.submissionDate).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-bold text-gray-900">₹{claim.claimAmount.toLocaleString()}</div>
-                    {claim.approvedAmount && (
-                      <div className="text-xs text-success font-medium">Approved: ₹{claim.approvedAmount.toLocaleString()}</div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <StatusBadge status={claim.status} />
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <Link
-                      href={`/insurer/claims/${claim._id}`}
-                      className="inline-flex items-center p-2 text-primary hover:bg-primary/10 rounded-full transition-colors"
-                      title="View Details"
-                    >
-                      <EyeIcon className="w-5 h-5" />
-                    </Link>
-                    {claim.status === 'pending' && (
-                      <>
-                        <button
-                          onClick={() => handleUpdate(claim._id, 'approved', claim.claimAmount)}
-                          disabled={isUpdating === claim._id}
-                          className="inline-flex items-center p-2 text-success hover:bg-success/10 rounded-full transition-colors disabled:opacity-50"
-                          title="Approve"
-                        >
-                          <CheckIcon className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleUpdate(claim._id, 'rejected')}
-                          disabled={isUpdating === claim._id}
-                          className="inline-flex items-center p-2 text-danger hover:bg-danger/10 rounded-full transition-colors disabled:opacity-50"
-                          title="Reject"
-                        >
-                          <XMarkIcon className="w-5 h-5" />
-                        </button>
-                      </>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
         {filteredClaims.length === 0 && (
-          <div className="text-center py-10 text-gray-500">
-            No claims found matching your criteria.
+          <div className="text-center py-10 text-[#4a5f69] text-sm">
+            No files match this tray filter.
           </div>
         )}
       </div>

@@ -12,53 +12,53 @@ import {
 export default function AuditTimeline({ events }: { events: any[] }) {
   if (!events || events.length === 0) {
     return (
-      <div className="p-8 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-        No audit events recorded yet.
+      <div className="p-6 text-center text-[#4a5f69] bg-[#e8eef1] border border-dashed border-[#8fa0ab] text-sm">
+        No audit events on this file.
       </div>
     );
   }
 
   const getIcon = (status: string) => {
     switch (status) {
-      case 'approved': return <CheckCircleIcon className="h-5 w-5 text-success" />;
-      case 'rejected': return <XCircleIcon className="h-5 w-5 text-danger" />;
-      case 'flagged': return <FlagIcon className="h-5 w-5 text-warning" />;
-      default: return <ArrowPathIcon className="h-5 w-5 text-primary" />;
+      case 'approved': return <CheckCircleIcon className="h-4 w-4 text-success" />;
+      case 'rejected': return <XCircleIcon className="h-4 w-4 text-danger" />;
+      case 'flagged': return <FlagIcon className="h-4 w-4 text-warning" />;
+      default: return <ArrowPathIcon className="h-4 w-4 text-primary" />;
     }
   };
 
   return (
-    <div className="relative pl-8 space-y-8 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-gray-100">
+    <div className="relative pl-7 space-y-5 before:absolute before:left-[9px] before:top-2 before:bottom-2 before:w-px before:bg-[#8fa0ab]">
       {events.map((event, idx) => (
         <div key={idx} className="relative">
-          <div className="absolute -left-[29px] p-1 bg-white border border-gray-100 rounded-full shadow-sm">
+          <div className="absolute -left-[25px] p-0.5 bg-folder border border-[#8fa0ab]">
             {getIcon(event.toStatus)}
           </div>
           <div>
-            <div className="flex items-center justify-between">
-              <h4 className="font-bold text-gray-900 capitalize">
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-sm font-medium capitalize">
                 {event.action || 'Status Change'}
               </h4>
-              <time className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              <time className="file-id">
                 {format(new Date(event.timestamp), "MMM d, h:mm a")}
               </time>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-[#4a5f69] mt-0.5">
               {event.fromStatus && (
-                <span className="font-medium text-gray-400">
-                  {event.fromStatus} &rarr;{' '}
+                <span>
+                  {event.fromStatus} →{' '}
                 </span>
               )}
-              <span className="font-bold text-gray-800 capitalize">{event.toStatus || 'Updated'}</span>
+              <span className="text-foreground capitalize">{event.toStatus || 'Updated'}</span>
             </p>
             {event.note && (
-              <div className="mt-2 p-3 bg-gray-50 rounded-lg text-sm text-gray-700 italic border-l-2 border-gray-200">
-                &ldquo;{event.note}&rdquo;
+              <div className="mt-2 p-2 bg-[#e8eef1] text-sm border-l-2 border-[#8fa0ab]">
+                “{event.note}”
               </div>
             )}
-            <div className="mt-2 flex items-center gap-1 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            <div className="mt-1 flex items-center gap-1 section-kicker">
               <UserIcon className="h-3 w-3" />
-              Adjuster Action
+              Adjuster
             </div>
           </div>
         </div>

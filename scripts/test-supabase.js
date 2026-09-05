@@ -1,6 +1,6 @@
 /**
  * Test script for Supabase connectivity and file listing
- * Usage: node test-supabase.js
+ * Usage: node scripts/test-supabase.js
  */
 
 const { createClient } = require('@supabase/supabase-js');

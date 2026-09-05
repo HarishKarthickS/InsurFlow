@@ -3,11 +3,8 @@
 import { useState } from "react";
 import { initiatePayout } from "@/lib/actions/financeActions";
 import { toast } from "react-hot-toast";
-import { 
-  CurrencyRupeeIcon, 
-  CreditCardIcon,
-  CheckCircleIcon
-} from "@heroicons/react/24/outline";
+import { CreditCardIcon } from "@heroicons/react/24/outline";
+import StatusStamp from "@/components/ui/StatusStamp";
 
 export default function PayoutTable({ initialClaims }: { initialClaims: any[] }) {
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
@@ -27,47 +24,44 @@ export default function PayoutTable({ initialClaims }: { initialClaims: any[] })
   };
 
   return (
-    <div className="bg-white rounded-3xl shadow-card overflow-hidden border border-gray-100">
-      <table className="min-w-full divide-y divide-gray-100 text-left">
-        <thead className="bg-gray-50/50">
+    <div className="queue-board overflow-x-auto">
+      <table>
+        <thead>
           <tr>
-            <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Target Entity</th>
-            <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Authorized Amount</th>
-            <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
-            <th className="px-8 py-5"></th>
+            <th>File</th>
+            <th>Authorized</th>
+            <th>Stamp</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-50">
+        <tbody>
           {initialClaims.map((claim) => (
-            <tr key={claim._id} className="hover:bg-gray-50/50 transition-colors group">
-              <td className="px-8 py-6">
-                <div className="font-bold text-gray-900">{claim.patientName}</div>
-                <div className="text-[10px] text-gray-400 font-bold uppercase mt-1">ID: #{claim._id.slice(-6)}</div>
+            <tr key={claim._id}>
+              <td>
+                <div className="font-medium">{claim.patientName}</div>
+                <div className="file-id">FILE-{claim._id.slice(-6).toUpperCase()}</div>
               </td>
-              <td className="px-8 py-6">
-                <div className="flex items-center gap-1 text-lg font-black text-emerald-600 font-mono">
-                  <CurrencyRupeeIcon className="h-5 w-5" />
-                  {claim.approvedAmount.toLocaleString()}
+              <td>
+                <div className="font-mono tabular-nums text-success">
+                  ₹{claim.approvedAmount.toLocaleString()}
                 </div>
-                <div className="text-[10px] text-gray-300 line-through">Claimed: ₹{claim.claimAmount.toLocaleString()}</div>
+                <div className="file-id line-through">Claimed ₹{claim.claimAmount.toLocaleString()}</div>
               </td>
-              <td className="px-8 py-6">
-                <span className="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-100">
-                  Ready for Payout
-                </span>
+              <td>
+                <StatusStamp status="payout" label="Ready to settle" />
               </td>
-              <td className="px-8 py-6 text-right">
+              <td className="text-right">
                 <button
                   onClick={() => handleSettle(claim._id)}
                   disabled={isProcessing === claim._id}
-                  className="bg-gray-900 hover:bg-black text-white px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-gray-200 transition-all flex items-center gap-2 ml-auto disabled:opacity-50"
+                  className="btn btn-primary ml-auto disabled:opacity-50"
                 >
                   {isProcessing === claim._id ? (
                     <div className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
                       <CreditCardIcon className="h-4 w-4" />
-                      Settle Funds
+                      Settle
                     </>
                   )}
                 </button>
@@ -76,8 +70,8 @@ export default function PayoutTable({ initialClaims }: { initialClaims: any[] })
           ))}
           {initialClaims.length === 0 && (
             <tr>
-              <td colSpan={4} className="px-8 py-20 text-center text-gray-400 italic">
-                No approved claims currently awaiting settlement.
+              <td colSpan={4} className="px-4 py-16 text-center text-[#4a5f69] text-sm">
+                No approved files awaiting settlement.
               </td>
             </tr>
           )}

@@ -63,7 +63,7 @@ export async function updateClaimStatus(claimId: string, status: string, approve
       subject: `Claim Update: ${status.toUpperCase()}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: #4B56D2;">Aarogya Claims Update</h2>
+          <h2 style="color: #1F6A72;">InsurFlow claims update</h2>
           <p>Your claim <strong>#${claimId.slice(-8)}</strong> has been updated to: <span style="font-weight: bold; text-transform: uppercase;">${status}</span></p>
           ${approvedAmount ? `<p>Approved Amount: <strong>₹${approvedAmount.toLocaleString()}</strong></p>` : ''}
           ${comments ? `<p>Comments: <em>"${comments}"</em></p>` : ''}

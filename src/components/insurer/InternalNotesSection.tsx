@@ -27,42 +27,42 @@ export default function InternalNotesSection({ claimId, initialNotes }: { claimI
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 text-gray-400">
-        <ChatBubbleLeftRightIcon className="h-5 w-5" />
-        <h3 className="text-sm font-bold uppercase tracking-widest">Internal Adjudicator Notes</h3>
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 text-[#4a5f69]">
+        <ChatBubbleLeftRightIcon className="h-4 w-4" />
+        <h3 className="section-kicker">Jacket notes</h3>
       </div>
 
-      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+      <div className="space-y-2 max-h-[400px] overflow-y-auto pr-1">
         {initialNotes.length === 0 ? (
-          <p className="text-sm text-gray-500 italic py-4">No internal discussion for this claim yet.</p>
+          <p className="text-sm text-[#4a5f69] py-3">No internal notes on this file.</p>
         ) : (
           initialNotes.map((n, i) => (
-            <div key={i} className="bg-gray-50 p-4 rounded-xl border border-gray-100 relative group">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-black text-primary uppercase tracking-tighter bg-primary/5 px-2 py-0.5 rounded">Adjuster</span>
-                <time className="text-[10px] text-gray-400 font-bold">{format(new Date(n.createdAt), 'MMM d, p')}</time>
+            <div key={i} className="bg-[#e8eef1] p-3 border border-[#c5d0d8]">
+              <div className="flex items-center justify-between mb-1">
+                <span className="section-kicker text-primary">Adjuster</span>
+                <time className="file-id">{format(new Date(n.createdAt), 'MMM d, p')}</time>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed">{n.note}</p>
+              <p className="text-sm leading-relaxed">{n.note}</p>
             </div>
           ))
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="relative mt-6">
+      <form onSubmit={handleSubmit} className="relative">
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="Add an internal note or observation..."
-          className="input pr-12 py-3 min-h-[100px] resize-none"
+          placeholder="Add a jacket note…"
+          className="input pr-11 py-2 min-h-[88px] resize-none"
           disabled={isSubmitting}
         />
         <button
           type="submit"
           disabled={isSubmitting || !note.trim()}
-          className="absolute right-3 bottom-3 p-2 bg-primary text-white rounded-lg shadow-lg shadow-primary/20 hover:scale-110 active:scale-95 transition-all disabled:opacity-50 disabled:grayscale"
+          className="absolute right-2 bottom-2 p-1.5 btn btn-primary disabled:opacity-50"
         >
-          <PaperAirplaneIcon className="h-5 w-5" />
+          <PaperAirplaneIcon className="h-4 w-4" />
         </button>
       </form>
     </div>

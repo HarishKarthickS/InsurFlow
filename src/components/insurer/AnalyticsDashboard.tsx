@@ -8,16 +8,13 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Cell,
   PieChart,
-  Pie
+  Pie,
+  Cell
 } from 'recharts';
-import { format, subDays, startOfDay } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 export default function AnalyticsDashboard({ claims }: { claims: any[] }) {
-  // 1. Process Data for Line Chart (Claims over last 7 days)
   const last7Days = [...Array(7)].map((_, i) => {
     const date = subDays(new Date(), i);
     const dateStr = format(date, 'MMM dd');
@@ -28,62 +25,58 @@ export default function AnalyticsDashboard({ claims }: { claims: any[] }) {
     return { name: dateStr, count };
   }).reverse();
 
-  // 2. Process Data for Pie Chart (Status Distribution)
   const statusData = [
-    { name: 'Approved', value: claims.filter(c => c.status === 'approved').length, color: '#4CAF50' },
-    { name: 'Pending', value: claims.filter(c => c.status === 'pending').length, color: '#FFC107' },
-    { name: 'Rejected', value: claims.filter(c => c.status === 'rejected').length, color: '#F44336' },
-    { name: 'Flagged', value: claims.filter(c => c.status === 'flagged').length, color: '#FF9800' },
+    { name: 'Approved', value: claims.filter(c => c.status === 'approved').length, color: '#2F6B52' },
+    { name: 'Pending', value: claims.filter(c => c.status === 'pending').length, color: '#3A6470' },
+    { name: 'Rejected', value: claims.filter(c => c.status === 'rejected').length, color: '#7A3333' },
+    { name: 'Flagged', value: claims.filter(c => c.status === 'flagged').length, color: '#8A6D2B' },
   ].filter(d => d.value > 0);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Volume Chart */}
-      <div className="card">
-        <h3 className="text-sm font-bold text-gray-400 uppercase mb-6">Submission Volume (7D)</h3>
-        <div className="h-[250px] w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="card p-4">
+        <h3 className="section-kicker mb-3">Intake volume · 7 days</h3>
+        <div className="h-[220px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={last7Days}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+              <CartesianGrid strokeDasharray="2 6" vertical={false} stroke="#b8c5ce" />
               <XAxis 
                 dataKey="name" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 'bold', fill: '#999' }} 
+                tick={{ fontSize: 10, fill: '#4a5f69' }} 
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fontSize: 10, fontWeight: 'bold', fill: '#999' }} 
+                tick={{ fontSize: 10, fill: '#4a5f69' }} 
               />
               <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px rgba(0,0,0,0.1)' }}
+                contentStyle={{ borderRadius: 0, border: '1px solid #8fa0ab', background: '#eef2f4' }}
               />
               <Line 
                 type="monotone" 
                 dataKey="count" 
-                stroke="#4B56D2" 
-                strokeWidth={4} 
-                dot={{ r: 4, fill: '#4B56D2', strokeWidth: 2, stroke: '#fff' }}
-                activeDot={{ r: 6, strokeWidth: 0 }}
+                stroke="#1F6A72" 
+                strokeWidth={2} 
+                dot={{ r: 3, fill: '#1F6A72', strokeWidth: 0 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Distribution Chart */}
-      <div className="card">
-        <h3 className="text-sm font-bold text-gray-400 uppercase mb-6">Status Distribution</h3>
-        <div className="h-[250px] w-full flex items-center">
+      <div className="card p-4">
+        <h3 className="section-kicker mb-3">Stamp mix</h3>
+        <div className="h-[220px] w-full flex items-center">
           <div className="flex-1 h-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={statusData}
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
+                  innerRadius={52}
+                  outerRadius={74}
+                  paddingAngle={2}
                   dataKey="value"
                 >
                   {statusData.map((entry, index) => (
@@ -94,12 +87,12 @@ export default function AnalyticsDashboard({ claims }: { claims: any[] }) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="w-32 space-y-3">
+          <div className="w-36 space-y-2">
             {statusData.map((d, i) => (
               <div key={i} className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
-                <span className="text-xs font-bold text-gray-600">{d.name}</span>
-                <span className="text-xs text-gray-400 ml-auto">{d.value}</span>
+                <div className="w-2 h-2" style={{ backgroundColor: d.color }} />
+                <span className="text-xs text-[#1b2c33]">{d.name}</span>
+                <span className="file-id ml-auto">{d.value}</span>
               </div>
             ))}
           </div>

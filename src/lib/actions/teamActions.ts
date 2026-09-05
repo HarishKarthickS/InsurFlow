@@ -5,6 +5,7 @@ import connectDB from "@/lib/utils/db";
 import User from "@/lib/models/User";
 import Organization from "@/lib/models/Organization";
 import { revalidatePath } from "next/cache";
+import { DEV_DEMO_PASSWORD } from "@/lib/devDemoPassword";
 
 export async function getTeamMembers() {
   const session = await auth();
@@ -34,11 +35,11 @@ export async function inviteTeamMember(formData: FormData) {
   const existing = await User.findOne({ email });
   if (existing) throw new Error("User with this email already exists");
 
-  // Create new user (B2B members default to 'password' for demo, in production we'd send invite email)
+  // Local demo only: invited members get DEV_DEMO_PASSWORD. Not for production.
   await User.create({
     name,
     email,
-    password: 'password', // Initial password
+    password: DEV_DEMO_PASSWORD,
     role,
     organizationId: (session.user as any).organizationId
   });

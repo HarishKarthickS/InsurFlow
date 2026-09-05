@@ -1,64 +1,235 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #F5F5F5;
-  --color-foreground: #1F2937;
-  --color-primary: var(--color-primary, #4B56D2);
-  --color-secondary: var(--color-secondary, #82C3EC);
-  --color-accent: #F1B4BB;
-  --color-success: #4CAF50;
-  --color-warning: #FFC107;
-  --color-danger: #F44336;
-  --color-info: #2196F3;
-  
-  --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --color-background: #c5d0d8;
+  --color-foreground: #1b2c33;
+  --color-folder: #eef2f4;
+  --color-rail: #2a3d46;
+  --color-primary: var(--color-primary, #1f6a72);
+  --color-secondary: var(--color-secondary, #5a7a86);
+  --color-accent: #3d6f7c;
+  --color-success: #2f6b52;
+  --color-warning: #8a6d2b;
+  --color-danger: #7a3333;
+  --color-info: #3a6470;
+  --font-sans: var(--font-public), "Public Sans", sans-serif;
+  --font-display: var(--font-barlow), "Barlow Condensed", sans-serif;
+  --font-mono: var(--font-redhat), "Red Hat Mono", ui-monospace, monospace;
 }
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: var(--font-sans);
   }
-  
+
   body {
-    @apply bg-background text-gray-800 min-h-screen;
+    @apply min-h-screen text-foreground;
+    background-color: var(--color-background);
+    background-image:
+      linear-gradient(180deg, rgba(42, 61, 70, 0.06) 0%, transparent 180px),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 11px,
+        rgba(42, 61, 70, 0.045) 11px,
+        rgba(42, 61, 70, 0.045) 12px
+      );
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold;
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 }
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-md transition-all duration-300 font-medium text-white focus:outline-none;
-  }
-  
-  .btn-primary {
-    @apply bg-primary hover:opacity-90;
-  }
-  
-  .btn-secondary {
-    @apply bg-secondary hover:opacity-90;
-  }
-  
-  .btn-success {
-    @apply bg-success hover:opacity-90;
-  }
-  
-  .btn-danger {
-    @apply bg-danger hover:opacity-90;
-  }
-  
-  .input {
-    @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
-  }
-  
-  .card {
-    @apply bg-white rounded-lg p-6 shadow-card hover:shadow-hover transition-shadow duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors focus:outline-none;
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
   }
 
-  .container {
-    @apply mx-auto max-w-[1200px] px-4;
+  .btn-primary {
+    background: var(--color-primary);
+    color: #f4f8f8;
+    border-color: #164e54;
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.08);
+  }
+
+  .btn-secondary {
+    background: #d8e2e8;
+    color: #1b2c33;
+    border-color: #9aadb8;
+  }
+
+  .btn-success {
+    background: var(--color-success);
+    color: #f3faf6;
+    border-color: #214a38;
+  }
+
+  .btn-danger {
+    background: var(--color-danger);
+    color: #faf4f4;
+    border-color: #4f1f1f;
+  }
+
+  .input {
+    @apply w-full px-2.5 py-1.5 text-sm;
+    background: #f7fafb;
+    border: 1px solid #9aadb8;
+    color: #1b2c33;
+    border-radius: 0;
+  }
+
+  .input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 0;
+  }
+
+  .card {
+    @apply p-4;
+    background: var(--color-folder);
+    border: 1px solid #a8b8c2;
+    box-shadow: 3px 3px 0 #8fa0ab;
+    border-radius: 0 2px 2px 0;
+    position: relative;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -8px;
+    width: 16px;
+    height: 28px;
+    background: #c5d4dc;
+    border: 1px solid #8fa0ab;
+    border-right: none;
+    clip-path: polygon(0 18%, 100% 0, 100% 100%, 0 82%);
+  }
+
+  .queue-board {
+    background: #e8eef1;
+    border: 1px solid #8fa0ab;
+    box-shadow: inset 0 1px 0 #fff, 0 2px 0 #9aadb8;
+  }
+
+  .queue-board table {
+    @apply w-full text-left text-sm;
+    border-collapse: collapse;
+  }
+
+  .queue-board th {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #4a5f69;
+    background: #d5e0e6;
+    border-bottom: 1px solid #8fa0ab;
+    padding: 6px 10px;
+    font-weight: 600;
+  }
+
+  .queue-board td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #c5d0d8;
+    vertical-align: middle;
+  }
+
+  .queue-board tr:hover td {
+    background: #f4f8fa;
+  }
+
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 1;
+    padding: 5px 8px;
+    border: 2px solid currentColor;
+    box-shadow: inset 0 0 0 1px currentColor;
+    transform: rotate(-8deg);
+    white-space: nowrap;
+  }
+
+  .stamp-approved {
+    color: #2f6b52;
+  }
+
+  .stamp-rejected {
+    color: #7a3333;
+  }
+
+  .stamp-pending,
+  .stamp-in_review {
+    color: #3a6470;
+  }
+
+  .stamp-flagged {
+    color: #8a6d2b;
+  }
+
+  .stamp-payout {
+    color: #1f6a72;
+  }
+
+  .file-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: #4a5f69;
+  }
+
+  .section-kicker {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #4a5f69;
+  }
+
+  .nav-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    margin-left: 10px;
+    clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+    color: #c5d4dc;
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+
+  .nav-tab:hover {
+    background: rgba(238, 242, 244, 0.08);
+    color: #eef2f4;
+  }
+
+  .nav-tab-active {
+    background: var(--color-folder);
+    color: #1b2c33;
+  }
+
+  .metric-tile {
+    background: var(--color-folder);
+    border: 1px solid #a8b8c2;
+    padding: 12px 14px;
+    box-shadow: 2px 2px 0 #8fa0ab;
   }
 }

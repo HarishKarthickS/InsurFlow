@@ -1,83 +1,72 @@
-# InsurFlow B2B: The Intelligence-First Claims Adjudication Engine
+# InsurFlow
 
-**Claim management doesn't have to be a nightmare.**  
-Welcome to **InsurFlow B2B**, a high-performance, multi-tenant enterprise SaaS designed to transform how insurance companies ingest, analyze, and settle medical claims. Powered by **Next.js 15**, **Tailwind CSS v4**, and **Gemini AI**, this is the ultimate open-source toolkit for modern insurance infrastructure.
+Local demo of a medical-claims workflow: insurers review a queue, providers submit claims, and a seed database fills in sample orgs, users, and cases.
 
----
+This is a Next.js 15 App Router monolith (Auth.js, MongoDB/Mongoose, Tailwind). It is **not** a production SaaS, a “perfect” stack, or a live insurance product.
 
-## The "Perfect SaaS" Experience
+## What exists in the repo
 
-InsurFlow isn't just a tracker; it's a full-cycle automated ecosystem.
+- **Auth and roles:** credentials login/register; roles include admin, manager, adjuster, provider admin/staff.
+- **Insurer workspace:** dashboard, claim queue, claim detail with an audit trail, team invite, org settings (policy rules), reports CSV export, payout marking, manual claim entry, ingest API docs page.
+- **Provider workspace:** dashboard, claim submit, payouts list.
+- **Risk flags:** heuristic checks (amount thresholds + org policy category/limit vs description text). Not a fraud ML model.
+- **Bill extraction (optional):** `POST /api/v1/extract` uses Gemini when `GEMINI_API_KEY` is set (PDF text first, vision fallback). Without a key, that path fails.
+- **Claim ingest API:** `POST /api/v1/ingest/claim` for the seeded org API key.
+- **Payouts:** settlement writes a generated reference string; there is no real bank integration.
+- **Storage:** local uploads by default; optional Supabase helpers if you configure those env vars.
+- **Realtime (optional):** a separate Socket.IO process (`npm run socket` / `dev:all`).
+- **Docker:** app + MongoDB via `docker-compose.yml`. Seed with `npm run seed` (or `docker-compose exec app npm run seed`).
 
-### AI-Powered Efficiency
-*   **Tiered OCR Pipeline:** Upload a medical bill and watch as our AI (Gemini 2.0) automatically extracts patient data, clinical descriptions, and financial amounts.
-*   **Risk Engine:** Automated risk heuristics that flag policy violations and potential fraud the second a claim enters the system.
+Ad-hoc Socket.IO / Supabase smoke scripts live in `scripts/` (not the Next.js `src/` tree).
 
-### HospitalLink Provider Portal
-*   **Self-Service Submission:** Hospitals and clinics can directly digitize claims through their own secure workspace.
-*   **Settlement Transparency:** Providers can track every approved claim through to financial settlement with live bank reference tracking.
+## What this is not
 
-### Enterprise Adjudication Center
-*   **Master Queue:** A dense, data-rich command center for adjusters with real-time assignment and risk-level prioritization.
-*   **Rule-Based Governance:** Admins can define custom adjudication policies (e.g., "Dental max ₹50k") that the system enforces automatically.
-*   **Full Audit Traceability:** A permanent, immutable timeline for every claim, recording who did what, when, and why.
+- Not multi-region enterprise infrastructure, live bank settlement, or an immutable compliance ledger.
+- Demo accounts are **local development only**. Re-seed after pulling password changes.
 
-### Analytics & Insight
-*   **Analytics Dashboards:** Beautiful, interactive charts showing volume trends and status distribution.
-*   **Data Export Engine:** Generate and download comprehensive CSV reports for financial auditing with one click.
+## Run locally
 
----
+1. Create a `.env` in the repo root (not committed). Typical keys:
 
-## Tech Stack (The Modern Monolith)
-
-We've ditched the complexity of decoupled apps for a unified, high-velocity Next.js monolith.
-
-*   **Framework:** [Next.js 15](https://nextjs.org/) (App Router & Server Actions)
-*   **UI Engine:** [Tailwind CSS v4](https://tailwindcss.com/) (The future of styling)
-*   **Intelligence:** [Gemini 1.5 Flash / 2.0 Exp](https://aistudio.google.com/)
-*   **Database:** [MongoDB](https://www.mongodb.com/) (Mongoose)
-*   **Identity:** [Auth.js v5](https://authjs.dev/) (Enterprise RBAC)
-*   **Infrastructure:** [Docker](https://www.docker.com/) & [Supabase Storage](https://supabase.com/)
-
----
-
-## Instant Deployment (Local Development)
-
-Get your insurance workspace running in less than 2 minutes.
-
-### 1. Configure your environment
-Create a `.env` in the root (based on the provided template):
 ```env
-MONGODB_URI=mongodb://mongodb_container:27017/claims-management
-AUTH_SECRET=npx_auth_secret_result
-GEMINI_API_KEY=your_key
-GEMINI_MODEL=gemini-2.0-flash-exp
+MONGODB_URI=mongodb://localhost:27017/claims-management
+AUTH_SECRET=generate-a-local-secret
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-1.5-flash
 STORAGE_TYPE=local
 ```
 
-### 2. Launch with Docker
+Docker Compose sets `MONGODB_URI` to `mongodb://mongodb_container:27017/claims-management` and publishes Mongo on host port **27018**.
+
+2. Start:
+
 ```bash
 docker-compose up --build -d
+# or: npm install && npm run dev
 ```
 
-### 3. Seed the Demo Environment
-Populate your database with sample organizations, adjusters, and claims:
+3. Seed:
+
 ```bash
 docker-compose exec app npm run seed
+# or, against local Mongo: npm run seed
 ```
 
----
+4. Open [http://localhost:3000](http://localhost:3000).
 
-## Demo Adjudicator Access
-Go to [http://localhost:3000](http://localhost:3000) and use these pre-loaded accounts:
+## Demo accounts (DEV ONLY)
 
-*   **Insurance Admin:** `admin@insurflow.com` (password: `password`)
-*   **Adjuster Pool:** `adjuster@insurflow.com` (password: `password`)
-*   **Hospital Admin:** `admin@citygeneral.com` (password: `password`)
+Password for all seeded users: `InsurFlowDev!2026`  
+Documented and shown on the login page as a **local-only** value. Do not reuse it anywhere real. Team invites in this demo also set that same password.
 
----
+| Role | Email |
+| --- | --- |
+| Insurance admin | `admin@insurflow.com` |
+| Manager | `manager@insurflow.com` |
+| Adjuster | `adjuster@insurflow.com` |
+| Hospital admin | `admin@citygeneral.com` |
+| Provider staff | `staff@citygeneral.com` |
 
-## Open Source & Fun
-InsurFlow is built with for the community. Whether you're an insurance professional looking to automate your workflow or a developer wanting to see a **Perfect Next.js Monolith** in action, you're welcome here.
+## Repo
 
-**Happy Adjudicating!**
+[HarishKarthickS/InsurFlow](https://github.com/HarishKarthickS/InsurFlow)
